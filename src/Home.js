@@ -7,29 +7,72 @@ class Home extends Component {
     constructor(props) {
         super(props);
         this.state = {
+          items : [],
+          isLoaded : false,
+        }
+        this.state = {
           columnDefs: [{
-            headerName: "Make", field: "make"
+            headerName: "EmployeeId", field: "EmployeeId"
           }, {
-            headerName: "Model", field: "model"
+            headerName: "FirstName", field: "FirstName"
           }, {
-            headerName: "Price", field: "price"
+            headerName: "LastName", field: "LastName"
+          }, {
+            headerName: "Email_Id", field: "Email_Id"
+          }, {
+            headerName: "MobileNumber", field: "MobileNumber"
+          }, {
+            headerName: "Address", field: "Address"
+          }
+          , {
+            headerName: "Edit/Delete", field: "Edit/Delete"
           }],
           rowData: [{
-            make: "Toyota", model: "Celica", price: 35000
+            EmployeeId: "1", FirstName: "Celica", LastName: "Ray"
           }, {
-            make: "Ford", model: "Mondeo", price: 32000
+            EmployeeId: "2", FirstName: "Mondeo", LastName: "Deo"
           }, {
-            make: "Porsche", model: "Boxter", price: 72000
+            EmployeeId: "3", FirstName: "Boxter", LastName: "Sam"
           }]
         }
     }
+
+    componentDidMount(){
+
+      const data = {location: value}
+      const options = {
+        method : 'GET',
+        headers : {
+          'Content-Type': 'application/json'
+        },
+        body :JSON.stringify(data)
+
+      }
+
+      fetch('http://192.168.0.102:12817/Employee')
+      .then(res => res.json)
+      .then(json => {
+      this.setState({
+        isLoaded : true,
+        items: json,
+      })
+      });
+    }
     render() {
+
+      var {isLoaded} = this.state;
+
+      if(!isLoaded)
+      {
+        return <div>Loading....</div>
+      }
+      else{
         return (
             <div
-            className="ag-theme-alpine"
+            className="ag-theme-alpine App" 
             style={{
             height: '250px',
-            width: '600px' }}
+            width: '1500px' }}
           >
             <AgGridReact
               columnDefs={this.state.columnDefs}
@@ -37,6 +80,7 @@ class Home extends Component {
             </AgGridReact>
           </div>
         )
+            }
     }
 }
 
