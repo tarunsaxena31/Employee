@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-alpine.css';
+//import editImg from './Images/Edit.png'
+//import deleteImg from './Images/Delete.png'
 
 class Home extends Component {
  
@@ -11,6 +13,9 @@ class Home extends Component {
         this.state = {
           apiResponse : [],
           isLoaded : false,
+
+          editImg : './src/Images/Edit.png',
+          deleteImg : './src/Images/Delete.png',
           
           columnDefs: [{
             headerName: "EmployeeId", field: "employeeId"
@@ -28,8 +33,9 @@ class Home extends Component {
             headerName: "Address", field: "address"
           }
           , {
-            headerName: "Edit/Delete", field: "Edit/Delete"
-          }],          
+            headerName: "Edit/Delete", field: "editdelete", cellRenderer: '<span id="imgspan"><img border="0" width = "15" height="10"  ></span>'
+          }],    
+             
           // rowData: [{
           //   EmployeeId: "1", FirstName: "Celica", LastName: "Ray", Email_Id:"cr@gmail.com", MobileNumber:"7350308970", Address:"Wakad"
           // }, {
@@ -80,11 +86,22 @@ class Home extends Component {
     addEmployee() {
       console.log("I Clicked");
     }
+
+
     render() {
 
       var {isLoaded} = this.state;
-       
-//debugger;    
+      //var editImg = './src/Images/Edit.png'
+
+      //debugger;
+      this.state.apiResponse.map((employee) => (
+        employee["editdelete"] = function (){ return '<img src="'+this.state.editImg+'"> '}
+        
+        // employee["editdelete"] = () => function(data) {
+        //   return '<img src="'+editImg+'"> '
+        // }
+    ));
+   
       if(!isLoaded)
       {
         return <div>Loading....</div>
@@ -94,8 +111,8 @@ class Home extends Component {
             <div
             className="ag-theme-alpine App" 
             style={{
-            height: '550px',
-            width: '1500px' }}
+            height: '350px',
+            width: '1300px' }}
           >
             
             {/* <ul>
